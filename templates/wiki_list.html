@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Wiki{% endblock %}
+
+{% block styles %}
+    <style>
+        .p-article {
+            color: black;
+            font-size: 2em;
+            font-weight: bold;
+        }
+        #category-name {
+            color: black;
+            font-size: 1.5em;
+        }
+    </style>
+{% endblock styles %}
+
+{% block wiki %}active{% endblock %}
+
+{% block content %}
+    {% if request.user.is_authenticated %}
+    <p class='p-article'>User's Articles</p>
+    <ul>
+        {% for article in user_articles %}
+            <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+        {% endfor %}
+    </ul>
+    <p class='p-article'>All Articles</p>
+    <ul>
+        <li>Laptop Articles
+            <ul>
+                {% for article in laptop_articles %}
+                    <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+                {% endfor %}
+            </ul>
+        </li>
+        <li>Phone Articles
+            <ul>
+                {% for article in phone_articles %}
+                    <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+                {% endfor %}
+            </ul>
+        </li>
+        <li>Processor Articles
+            <ul>
+                {% for article in processor_articles %}
+                    <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+                {% endfor %}
+            </ul>
+        </li>
+        <li>Keyboard Articles
+            <ul>
+                {% for article in keyboard_articles %}
+                    <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+                {% endfor %}
+            </ul>
+        </li>
+        <li>TV Articles
+            <ul>
+                {% for article in tv_articles %}
+                    <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+                {% endfor %}
+            </ul>
+        </li>
+    </ul>
+    <p>Want to create an article? <a href="{% url "wiki:wiki_create" %}">Click here!</a></p>
+    {% else %}
+        <p class='p-article'>All Articles</p>
+        <ul>
+            <li>Laptop Articles
+                <ul>
+                    {% for article in laptop_articles %}
+                        <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </li>
+            <li>Phone Articles
+                <ul>
+                    {% for article in phone_articles %}
+                        <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </li>
+            <li>Processor Articles
+                <ul>
+                    {% for article in processor_articles %}
+                        <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </li>
+            <li>Keyboard Articles
+                <ul>
+                    {% for article in keyboard_articles %}
+                        <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </li>
+            <li>TV Articles
+                <ul>
+                    {% for article in tv_articles %}
+                        <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </li>
+        </ul>
+        <p>Want to create an article? <a href="{% url "wiki:wiki_create" %}">Click here!</a></p>
+    {% endif %}
+{% endblock content %}
