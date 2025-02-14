@@ -13,7 +13,7 @@ Make sure you have:
 
 ```sh
 # Clone the repository
-git clone https://github.com/<your-username>/hobbysite.git
+git clone https://github.com/astrea25/Hobbysite.git
 cd hobbysite
 ```
 
