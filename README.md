@@ -1,3 +1,42 @@
+## Steps to Run
+
+Follow these steps to set up and run the Django project locally:
+
+### Prerequisites
+Make sure you have:
+- Python (>=3.8) installed
+- PostgreSQL installed (if using Postgres)
+- A virtual environment (recommended)
+- `pip` and `pipenv` installed
+
+### Installation
+
+```sh
+# Clone the repository
+git clone https://github.com/<your-username>/hobbysite.git
+cd hobbysite
+```
+
+# Create a virtual environment
+```sh
+python -m venv venv
+source venv/bin/activate  # For Mac/Linux
+venv\Scripts\activate  # For Windows
+```
+
+# Install dependencies
+```sh
+pip install -r requirements.txt
+```
+# Run migrations
+```sh
+python manage.py migrate
+```
+# Start the server
+```sh
+python manage.py runserver
+```
+---
 # Hobbysite
 
 Hobbysite is a comprehensive platform featuring the following sections:
@@ -351,3 +390,188 @@ Each section is built using Django for both the front-end and back-end, with spe
   - Wiki Articles
   - Comments
   - Profiles
+ 
+  # Hobbysite
+
+This is a Django-based hobby site that includes the following features:
+- **Commission System**
+- **Forum**
+- **Merchandise Store**
+- **Wiki**
+- **User Authentication & Profile Management**
+
+## Table of Contents
+
+- [Commission](#commission)
+- [Forum](#forum)
+- [Merchandise Store](#merchandise-store)
+- [Wiki](#wiki)
+- [Profile](#profile)
+- [Steps to Run](#steps-to-run)
+
+---
+
+## Commission
+
+### URLs:
+- **List View:** `/commissions/list`
+- **Detail View:** `/commissions/detail/1`
+- **Create View:** `/commissions/add`
+- **Update View:** `/commissions/1/edit`
+
+### Models:
+#### Commission
+- **Title:** Max length 255 characters
+- **Description:** Text field  
+- **Status:** Options:
+  - `Open` (default)
+  - `Full`
+  - `Completed`
+  - `Discontinued`
+- **Created On:** DateTime (set only when created)
+- **Updated On:** DateTime (auto-updated on last modification)
+
+_Commissions are sorted by `Created On` in ascending order._
+
+#### Job (Formerly Comments Model)
+- **Commission:** Foreign key to `Commission`, cascades on deletion
+- **Role:** Max length 255 characters
+- **Manpower Required:** Integer (whole number)
+- **Status:** Options:
+  - `Open` (default)
+  - `Full`
+
+_Jobs are sorted by `Status (Open > Full)`, `Manpower Required` (descending), then `Role` (ascending)._
+
+#### JobApplication
+- **Job:** Foreign key to `Job`, cascades on deletion
+- **Applicant:** Foreign key to `Profile`, cascades on deletion
+- **Status:** Options:
+  - `Pending` (default)
+  - `Accepted`
+  - `Rejected`
+- **Applied On:** DateTime (set only when created)
+
+_JobApplications are sorted by `Status (Pending > Accepted > Rejected)`, then `Applied On` (descending)._
+
+---
+
+## Forum
+
+### URLs:
+- **List View:** `/forum/threads`
+- **Detail View:** `/forum/thread/1`
+- **Create View:** `/forum/thread/add`
+- **Edit View:** `/forum/thread/1/edit`
+
+### Models:
+#### ThreadCategory
+- **Name:** Max length 255 characters
+- **Description:** Text field  
+
+_Sorted alphabetically._
+
+#### Thread
+- **Title:** Max length 255 characters
+- **Author:** Foreign key to `Profile`, set to `NULL` when deleted
+- **Category:** Foreign key to `ThreadCategory`, set to `NULL` when deleted
+- **Entry:** Text field  
+- **Image:** Optional image field  
+- **Created On:** DateTime (set only when created)
+- **Updated On:** DateTime (auto-updated on last modification)
+
+_Threads are sorted by `Created On` in descending order._
+
+#### Comment
+- **Author:** Foreign key to `Profile`, set to `NULL` when deleted
+- **Thread:** Foreign key to `Thread`, cascades on deletion
+- **Entry:** Text field  
+- **Created On:** DateTime (set only when created)
+- **Updated On:** DateTime (auto-updated on last modification)
+
+_Comments are sorted by `Created On` in ascending order._
+
+---
+
+## Merchandise Store
+
+### URLs:
+- **Product List View:** `/merchstore/items`
+- **Product Detail View:** `/merchstore/item/1`
+- **Product Create View:** `/merchstore/item/add`
+- **Product Update View:** `/merchstore/item/1/edit`
+- **Cart View:** `/merchstore/cart`
+- **Transactions List View:** `/merchstore/transactions`
+
+### Models:
+#### ProductType
+- **Name:** Max length 255 characters
+- **Description:** Text field  
+
+_Sorted alphabetically._
+
+#### Product
+- **Name:** Max length 255 characters
+- **Product Type:** Foreign key to `ProductType`, set to `NULL` when deleted
+- **Owner:** Foreign key to `Profile`, cascades on deletion
+- **Description:** Text field  
+- **Price:** Decimal (two decimal places)
+- **Stock:** Whole number
+- **Status:** Options:
+  - `Available` (default)
+  - `On sale`
+  - `Out of stock` (when stock is `0`)
+
+#### Transaction
+- **Buyer:** Foreign key to `Profile`, set to `NULL` when deleted
+- **Product:** Foreign key to `Product`, set to `NULL` when deleted
+- **Amount:** Integer (quantity to buy)
+- **Status:** Options:
+  - `On cart`
+  - `To Pay`
+  - `To Ship`
+  - `To Receive`
+  - `Delivered`
+- **Created On:** DateTime (set only when created)
+
+---
+
+## Wiki
+
+### URLs:
+- **List View:** `/wiki/articles`
+- **Detail View:** `/wiki/article/1`
+- **Create View:** `/wiki/article/add`
+- **Update View:** `/wiki/article/1/edit`
+
+### Models:
+#### ArticleCategory
+- **Name:** Max length 255 characters
+- **Description:** Text field  
+
+_Sorted alphabetically._
+
+#### Article
+- **Title:** Max length 255 characters
+- **Author:** Foreign key to `Profile`, set to `NULL` when deleted
+- **Category:** Foreign key to `ArticleCategory`, set to `NULL` when deleted
+- **Entry:** Text field  
+- **Header Image:** Image field  
+- **Created On:** DateTime (set only when created)
+- **Updated On:** DateTime (auto-updated on last modification)
+
+---
+
+## Profile
+
+### URLs:
+- **Update View:** `/profile`
+
+### Models:
+#### Profile
+- **Extension of the `User` model**
+- **Display Name:** Max length 63 characters
+- **Email Address:** Email field  
+
+---
+
