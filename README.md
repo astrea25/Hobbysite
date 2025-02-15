@@ -36,11 +36,7 @@ python manage.py migrate
 # Create a Secret Key
 Generate a secret key using the command
 ```sh
-python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
-```
-Then paste the result in a new file named `.env` with the format
-```sh
-SECRET_KEY = <generated key>
+python -c "from django.core.management.utils import get_random_secret_key; print(f'SECRET_KEY={get_random_secret_key()}')" > .env
 ```
 # Start the server
 ```sh
